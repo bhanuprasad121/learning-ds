@@ -183,8 +183,7 @@ def food_menu():
  print('1.Chicken Tikka                  Price:199')
  print('2.Chicken Biryani                price:299')
  print('3.Mutton Biryani                 Price:359')
- print('4.Bheja Fry                      Price:250')
- print('5.Chicken Drumstick              Price:150')
+
 
  choose=int(input('Enter your liking(1-5):'))
 
@@ -197,12 +196,6 @@ def food_menu():
  elif choose==3:
   price=359
   item='Mutton Biryani'
- elif choose==4:
-  price=250
-  item='Bheja Fry'
- elif choose==5:
-  price=150
-  item='Chicken Drumstick'
  else:
   print('Check the Menu') 
 
