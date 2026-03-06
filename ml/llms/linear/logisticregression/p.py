@@ -1,6 +1,6 @@
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
-data=pd.read_excel(f"c:\\Users\\bhanu\\OneDrive\\Desktop\\for llm\\student_data.xlsx")
+data = pd.read_excel("student_pass_fail_dataset.xlsx")
 # print(data)
 model=LogisticRegression()
 # print("model:", model)

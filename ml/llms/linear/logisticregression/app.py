@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import pickle
 
-data=pd.read_excel(r"C:\Users\bhanu\OneDrive\Desktop\for llm\student_pass_fail_dataset.xlsx")
-st.write("hello tanvi")
+data = pd.read_excel("student_pass_fail_dataset.xlsx")
+
 
 with open('lr.pkl','rb') as f:
     model=pickle.load(f) 
@@ -20,10 +20,13 @@ with st.form('prediction'):
     if submit_button:
         new_data=[[study_hour,atten,prevscore]]
         result=model.predict(new_data)
+        probability=model.predict_proba(new_data)[0]
 
         if result[0]==1:
             st.success('Student Will Pass')
-            st.snow()
+            st.balloons()
+            st.metric(label="pass prob",value=f'value is :{probability[1]*100}')
         else:
             st.error('Student Will Fail')    
             st.toast('you failed')
+            st.metric(label="fail prob",value=f'value is :{probability[0]*100}')    

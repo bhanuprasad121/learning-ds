@@ -3,7 +3,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 import pickle
 
-data=pd.read_excel(r"C:\Users\bhanu\OneDrive\Desktop\for llm\student_pass_fail_dataset.xlsx")
+data = pd.read_excel("student_pass_fail_dataset.xlsx")
 model=LogisticRegression()
 print(data)
 x=data[['StudyHours','Attendance','PreviousScore']]
