@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import RandomOverSampler
-
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report
 
 
 col=['fLength','fWidth','fSize','fConc','fConc1','fAysm','fM3Long','fM3Trans','fAlpha','fDict','Class']
@@ -22,8 +23,11 @@ for label in col[:-1]:
 train,valid,test=np.split(df.sample(frac=1),[int(0.6*len(df)),int(0.8*len(df))])
 
 def scale_dataset(dataframe,oversample=False):
-    x=dataframe[dataframe.columns[:-1]].values
-    y=dataframe[dataframe.columns[-1]].values
+    if isinstance(dataframe,np.ndarray):
+        dataframe=pd.DataFrame(dataframe)
+
+    x=dataframe.iloc[:,:-1].values
+    y=dataframe.iloc[:,-1].values
 
     scaler=StandardScaler()
     x=scaler.fit_transform(x)
@@ -37,11 +41,14 @@ def scale_dataset(dataframe,oversample=False):
     return data,x,y
     
 
-train,x_tresty_train = scale_dataset(train,oversample=True)    
-valid,x_valid,y_valid = scale_dataset(valid,oversample=True)
-test,x_test,y_test= scale_dataset(test,oversample=True) 
-# print(len(train[train['Class']==1]))
-# print(len(train[train['Class']==0]))
+train_data,x_train,y_train = scale_dataset(train,oversample=True)    
+valid_data,x_valid,y_valid = scale_dataset(valid,oversample=False)
+test_data,x_test,y_test= scale_dataset(test,oversample=False) 
 
+knn_model=KNeighborsClassifier(n_neighbors=1)
+knn_model.fit(x_train,y_train)
+y_predict=knn_model.predict(x_test)
+print(y_predict)
+print(classification_report(y_test,y_predict))
 
 # print(df.head())
