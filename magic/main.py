@@ -10,6 +10,7 @@ from sklearn.metrics import classification_report
 col=['fLength','fWidth','fSize','fConc','fConc1','fAysm','fM3Long','fM3Trans','fAlpha','fDict','Class']
 df=pd.read_csv('C:\\Users\\bhanu\\Desktop\\Data science\\magic\\magic+gamma+telescope\\magic04.data',names=col)
 df['Class']=(df['Class']=='g').astype(int)
+
 for label in col[:-1]:
     plt.hist(df[df['Class']==1][label],color='blue',label='gamma',alpha=0.7,density=True)
     plt.hist(df[df['Class']==0][label],color='red',label='hadron',alpha=0.7,density=True)
@@ -43,12 +44,20 @@ def scale_dataset(dataframe,oversample=False):
 
 train_data,x_train,y_train = scale_dataset(train,oversample=True)    
 valid_data,x_valid,y_valid = scale_dataset(valid,oversample=False)
-test_data,x_test,y_test= scale_dataset(test,oversample=False) 
+test_data,x_test,y_test= scale_dataset(test.astype(int),oversample=False) 
 
 knn_model=KNeighborsClassifier(n_neighbors=1)
 knn_model.fit(x_train,y_train)
 y_predict=knn_model.predict(x_test)
-print(y_predict)
-print(classification_report(y_test,y_predict))
+y_predict=y_predict.astype(int)
+# result=pd.DataFrame(x_test,columns=col[:-1])
+result=test.copy()
+# result['Class']=y_test
+result['predict_class']=y_predict
+print(result)
+# print(y_predict)
+# print('*****')
+# print(classification_report(y_test,y_predict))
 
-# print(df.head())
+
+print(df.head())
