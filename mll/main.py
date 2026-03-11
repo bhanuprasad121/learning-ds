@@ -3,4 +3,4 @@ import pandas as pd
 
 data=pd.read_csv("C:\\Users\\bhanu\\Desktop\\Data science\\mll\\titanic.csv")
 
-data=data.dro
+print(data)
