@@ -21,8 +21,12 @@ for label in col[:-1]:
     # plt.show()
 
 # train, validation,test dataset
-train,valid,test=np.split(df.sample(frac=1),[int(0.6*len(df)),int(0.8*len(df))])
+df=df.sample(frac=1,random_state=42).reset_index(drop=True)
+train=df.iloc[:int(0.6*len(df))]
+valid=df.iloc[:int(0.6*len(df)):int(0.8*len(df))]
+test=df.iloc[:int(0.8*len(df))]
 
+scaler=StandardScaler()
 def scale_dataset(dataframe,oversample=False):
     if isinstance(dataframe,np.ndarray):
         dataframe=pd.DataFrame(dataframe)
@@ -30,11 +34,10 @@ def scale_dataset(dataframe,oversample=False):
     x=dataframe.iloc[:,:-1].values
     y=dataframe.iloc[:,-1].values
 
-    scaler=StandardScaler()
     x=scaler.fit_transform(x)
 
     if oversample:
-        ros=RandomOverSampler()
+        ros=RandomOverSampler(random_state=42)
         x,y=ros.fit_resample(x,y)
 
     data=np.hstack((x,np.reshape(y,(-1,1))))
@@ -50,7 +53,7 @@ knn_model=KNeighborsClassifier(n_neighbors=1)
 knn_model.fit(x_train,y_train)
 y_predict=knn_model.predict(x_test)
 y_predict=y_predict.astype(int)
-# result=pd.DataFrame(x_test,columns=col[:-1])
+result=pd.DataFrame(x_test,columns=col[:-1])
 result=test.copy()
 # result['Class']=y_test
 result['predict_class']=y_predict
@@ -60,4 +63,4 @@ print(result)
 # print(classification_report(y_test,y_predict))
 
 
-print(df.head())
+# print(df.head())
